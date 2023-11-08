@@ -1,0 +1,172 @@
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+    }
+    .game-board {
+      width: 300px;
+      margin: 0 auto;
+      border: 2px solid black;
+      background-color: white;
+    }
+    .row {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+    .square {
+      width: 50px;
+      height: 50px;
+      border: 1px solid black;
+      font-size: 36px;
+      text-align: center;
+      line-height: 50px;
+    }
+    .green {
+      background-color: limegreen;
+    }
+    .yellow {
+      background-color: yellow;
+    }
+    .gray {
+      background-color: lightgray;
+    }
+    .keyboard {
+      width: 300px;
+      margin: 20px auto;
+      display: grid;
+      grid-template-columns: repeat(10, 30px);
+      grid-template-rows: repeat(3, 30px);
+      grid-gap: 2px;
+    }
+    .key {
+      border: 1px solid black;
+      background-color: gray;
+      font-size: 24px;
+      text-align: center;
+      line-height: 30px;
+      cursor: pointer;
+    }
+    .enter {
+      grid-column: 10 / span 2;
+      grid-row: 3;
+      background-color: limegreen;
+      cursor: pointer;
+    }
+    .disabled {
+      background-color: darkgray;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wordle</h1>
+  <div class="game-board">
+    <div class="row">
+      <div class="square green"></div>
+      <div class="square green"></div>
+      <div class="square green"></div>
+      <div class="square green"></div>
+      <div class="square green"></div>
+    </div>
+    <div class="row">
+      <div class="square yellow"></div>
+      <div class="square gray"></div>
+      <div class="square gray"></div>
+      <div class="square yellow"></div>
+      <div class="square gray"></div>
+    </div>
+    <div class="row">
+      <div class="square gray"></div>
+      <div class="square gray"></div>
+      <div class="square yellow"></div>
+      <div class="square gray"></div>
+      <div class="square gray"></div>
+    </div>
+  </div>
+  <div class="keyboard">
+    <div class="key">Q</div>
+    <div class="key">W</div>
+    <div class="key">E</div>
+    <div class="key">R</div>
+    <div class="key">T</div>
+    <div class="key">Y</div>
+    <div class="key">U</div>
+    <div class="key">I</div>
+    <div class="key">O</div>
+    <div class="key">P</div>
+    <div class="key">A</div>
+    <div class="key">S</div>
+    <div class="key">D</div>
+    <div class="key">F</div>
+    <div class="key">G</div>
+    <div class="key">H</div>
+    <div class="key">J</div>
+    <div class="key">K</div>
+    <div class="key">L</div>
+    <!-- <div class="key disabled"></div> -->
+    <div class="key">Z</div>
+    <div class="key">X</div>
+    <div class="key">C</div>
+    <div class="key">V</div>
+    <div class="key">B</div>
+    <div class="key">N</div>
+    <div class="key">M</div>
+    <div class="key enter">Enter</div>
+  </div>
+  <script>
+    // Get the elements from the document
+    var keys = document.querySelectorAll(".key");
+    var squares = document.querySelectorAll(".square");
+    var enter = document.querySelector(".enter");
+    // Define the secret word and the guessed word
+    var secret = "FLAME";
+    var guess = "";
+    // Add event listeners to the keys
+    for (var i = 0; i < keys.length; i++) {
+      keys[i].addEventListener("click", function() {
+        // If the key is not disabled and the guess is not complete
+        if (!this.classList.contains("disabled") && guess.length < 5) {
+          // Append the letter to the guess
+          guess += this.textContent;
+          // Update the corresponding square with the letter
+          squares[guess.length - 1].textContent = this.textContent;
+          // Disable the key
+          this.classList.add("disabled");
+        }
+      });
+    }
+    // Add event listener to the enter button
+    enter.addEventListener("click", function() {
+      // If the guess is complete
+      if (guess.length == 5) {
+        // Check each letter in the guess
+        for (var i = 0; i < 5; i++) {
+          // If the letter matches the secret word at the same position
+          if (guess[i] == secret[i]) {
+            // Change the square color to green
+            squares[i].classList.add("green");
+          }
+          // Else if the letter is in the secret word at a different position
+          else if (secret.includes(guess[i])) {
+            // Change the square color to yellow
+            squares[i].classList.add("yellow");
+          }
+          // Else
+          else {
+            // Change the square color to gray
+            squares[i].classList.add("gray");
+          }
+        }
+        // Reset the guess
+        guess = "";
+      }
+    });
+  </script>
+</body>
+</html>
